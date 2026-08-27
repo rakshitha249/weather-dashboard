@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="app-background"></div>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo"><i class="fa-solid fa-wind"></i></div>
+            <div class="menu">
+                <div class="menu-item active"><i class="fa-solid fa-cloud-sun"></i> <span>Weather</span></div>
+                <div class="menu-item"><i class="fa-solid fa-list-ul"></i> <span>Cities</span></div>
+                <div class="menu-item"><i class="fa-solid fa-map"></i> <span>Map</span></div>
+                <div class="menu-item"><i class="fa-solid fa-sliders"></i> <span>Settings</span></div>
+            </div>
+            <div class="sidebar-bottom">
+                <div class="toggle-group" title="Toggle C/F">
+                    <span class="toggle-label" style="font-size: 12px; margin-right: 5px;">&deg;C/&deg;F</span>
+                    <label class="switch">
+                        <input type="checkbox" id="unit-toggle">
+                        <span class="slider round"></span>
+                    </label>
+                </div>
+                <button id="theme-toggle" title="Toggle Theme"><i class="fa-solid fa-moon"></i></button>
+            </div>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Search -->
+            <div class="search-section">
+                <div class="search-bar">
+                    <input type="text" id="city-input" placeholder="Search for cities">
+                    <button id="search-btn"><i class="fa-solid fa-search"></i></button>
+                </div>
+            </div>
+
+            <!-- Loading & Error -->
+            <div id="loading" class="hidden">
+                <div class="spinner"></div>
+                <p>Fetching weather data...</p>
+            </div>
+            <div id="error-message" class="hidden">
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <p id="error-text">City not found. Please try again.</p>
+            </div>
+
+            <!-- Weather Content -->
+            <div id="weather-content" class="weather-grid hidden">
+                
+                <!-- Center Panel -->
+                <div class="center-panel">
+                    <!-- Current Weather -->
+                    <div class="current-weather-box">
+                        <div class="current-info">
+                            <h1 id="city-name">Madrid</h1>
+                            <p id="current-condition" class="chance-rain">Chance of rain: 0%</p>
+                            <h2 id="current-temp" class="big-temp">31&deg;</h2>
+                        </div>
+                        <i id="current-icon" class="fa-solid fa-sun large-icon"></i>
+                    </div>
+
+                    <!-- Air Conditions -->
+                    <div class="air-conditions-box">
+                        <div class="box-header">
+                            <h3>AIR CONDITIONS</h3>
+                            <button class="see-more-btn">See More</button>
+                        </div>
+                        <div class="conditions-grid">
+                            <div class="condition-item">
+                                <div class="condition-label"><i class="fa-solid fa-temperature-half"></i> Real Feel</div>
+                                <div class="condition-value" id="feels-like">30&deg;</div>
+                            </div>
+                            <div class="condition-item">
+                                <div class="condition-label"><i class="fa-solid fa-wind"></i> Wind</div>
+                                <div class="condition-value" id="wind-speed">02KM/H</div>
+                            </div>
+                            <div class="condition-item">
+                                <div class="condition-label"><i class="fa-solid fa-droplet"></i> Humidity</div>
+                                <div class="condition-value" id="humidity">0%</div>
+                            </div>
+                            <div class="condition-item">
+                                <div class="condition-label"><i class="fa-solid fa-arrow-down-up-across-line"></i> High / Low</div>
+                                <div class="condition-value" id="high-low">3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel -->
+                <div class="right-panel">
+                    <div class="forecast-box">
+                        <h3>7-DAY FORECAST</h3>
+                        <!-- We reuse the existing ID to let script.js populate it -->
+                        <div id="forecast-container" class="forecast-list">
+                            <!-- JS will generate .forecast-card items here -->
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
