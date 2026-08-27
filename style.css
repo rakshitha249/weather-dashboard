@@ -461,3 +461,70 @@ input:checked + .slider:before { transform: translateX(16px); }
         grid-template-columns: 1fr;
     }
 }
+
+/* Cities Content */
+#cities-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.cities-header {
+    margin-bottom: 20px;
+}
+
+.cities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+.city-card {
+    background: var(--bg-panel);
+    border-radius: 20px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    cursor: pointer;
+    transition: var(--transition);
+    border: 1px solid var(--border-color);
+}
+
+.city-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.city-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.city-card-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.city-card-temp {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.city-card-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-muted);
+}
+
+.city-card-icon {
+    font-size: 2rem;
+    color: var(--primary);
+}

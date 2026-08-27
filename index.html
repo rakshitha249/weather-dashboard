@@ -15,8 +15,8 @@
         <nav class="sidebar">
             <div class="logo"><i class="fa-solid fa-wind"></i></div>
             <div class="menu">
-                <div class="menu-item active"><i class="fa-solid fa-cloud-sun"></i> <span>Weather</span></div>
-                <div class="menu-item"><i class="fa-solid fa-list-ul"></i> <span>Cities</span></div>
+                <div class="menu-item active" id="nav-weather"><i class="fa-solid fa-cloud-sun"></i> <span>Weather</span></div>
+                <div class="menu-item" id="nav-cities"><i class="fa-solid fa-list-ul"></i> <span>Cities</span></div>
                 <div class="menu-item"><i class="fa-solid fa-map"></i> <span>Map</span></div>
                 <div class="menu-item"><i class="fa-solid fa-sliders"></i> <span>Settings</span></div>
             </div>
@@ -104,7 +104,16 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
+            <!-- Cities Content -->
+            <div id="cities-content" class="hidden">
+                <div class="cities-header">
+                    <h2>Major Global Cities</h2>
+                </div>
+                <div class="cities-grid" id="cities-grid-container">
+                    <!-- JS will populate cities here -->
+                </div>
             </div>
         </main>
     </div>

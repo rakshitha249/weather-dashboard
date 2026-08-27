@@ -15,7 +15,11 @@ const elements = {
     humidity: document.getElementById('humidity'),
     windSpeed: document.getElementById('wind-speed'),
     highLow: document.getElementById('high-low'),
-    forecastContainer: document.getElementById('forecast-container')
+    forecastContainer: document.getElementById('forecast-container'),
+    navWeather: document.getElementById('nav-weather'),
+    navCities: document.getElementById('nav-cities'),
+    citiesContent: document.getElementById('cities-content'),
+    citiesGridContainer: document.getElementById('cities-grid-container')
 };
 
 let currentWeatherData = null;
@@ -43,6 +47,11 @@ elements.unitToggle.addEventListener('change', (e) => {
     isFahrenheit = e.target.checked;
     if (currentWeatherData) {
         updateUI();
+    }
+    // Refresh cities list with new unit if it's currently displayed
+    if (!elements.citiesContent.classList.contains('hidden') && citiesLoaded) {
+        citiesLoaded = false;
+        loadGlobalCities();
     }
 });
 
@@ -178,8 +187,90 @@ elements.searchBtn.addEventListener('click', searchCity);
 elements.cityInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         searchCity();
+        elements.navWeather.click();
     }
 });
+
+// Navigation Logic
+elements.navWeather.addEventListener('click', () => {
+    elements.navWeather.classList.add('active');
+    elements.navCities.classList.remove('active');
+    elements.citiesContent.classList.add('hidden');
+    
+    if (currentWeatherData) {
+        elements.weatherContent.classList.remove('hidden');
+    }
+});
+
+elements.navCities.addEventListener('click', () => {
+    elements.navCities.classList.add('active');
+    elements.navWeather.classList.remove('active');
+    elements.weatherContent.classList.add('hidden');
+    elements.errorMessage.classList.add('hidden');
+    elements.citiesContent.classList.remove('hidden');
+    
+    loadGlobalCities();
+});
+
+// Global Cities Feature
+const globalCities = [
+    { name: 'London', lat: 51.5085, lon: -0.1257 },
+    { name: 'New York', lat: 40.7143, lon: -74.006 },
+    { name: 'Tokyo', lat: 35.6895, lon: 139.6917 },
+    { name: 'Paris', lat: 48.8534, lon: 2.3488 },
+    { name: 'Sydney', lat: -33.8678, lon: 151.2073 },
+    { name: 'Dubai', lat: 25.0772, lon: 55.3093 },
+    { name: 'Mumbai', lat: 19.0144, lon: 72.8479 },
+    { name: 'Singapore', lat: 1.2897, lon: 103.8501 }
+];
+
+let citiesLoaded = false;
+
+const loadGlobalCities = async () => {
+    if (citiesLoaded) return;
+    
+    elements.citiesGridContainer.innerHTML = '<div class="spinner"></div>';
+    
+    try {
+        const promises = globalCities.map(city => 
+            fetch(`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current=temperature_2m,weather_code,is_day`)
+                .then(res => res.json())
+                .then(data => ({ ...city, weather: data.current }))
+        );
+        
+        const results = await Promise.all(promises);
+        elements.citiesGridContainer.innerHTML = '';
+        
+        results.forEach(cityData => {
+            const info = getWeatherInfo(cityData.weather.weather_code, cityData.weather.is_day);
+            const card = document.createElement('div');
+            card.className = 'city-card';
+            
+            card.innerHTML = `
+                <div class="city-card-header">
+                    <span class="city-card-name">${cityData.name}</span>
+                    <i class="fa-solid ${info.icon} city-card-icon"></i>
+                </div>
+                <div class="city-card-temp">${formatTemp(cityData.weather.temperature_2m)}</div>
+                <div class="city-card-bottom">
+                    <span>${info.desc}</span>
+                </div>
+            `;
+            
+            card.addEventListener('click', () => {
+                elements.cityInput.value = cityData.name;
+                searchCity();
+                elements.navWeather.click();
+            });
+            
+            elements.citiesGridContainer.appendChild(card);
+        });
+        
+        citiesLoaded = true;
+    } catch (err) {
+        elements.citiesGridContainer.innerHTML = '<p>Error loading cities data.</p>';
+    }
+};
 
 // Initialize
 initTheme();
